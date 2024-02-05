@@ -64,6 +64,19 @@ function s:MakeStyleHeader(info_list, year)
     call setpos('.', s:ReturnNewlyPos(current_cursor_pos, 7))
 endfunction
 
+function s:HaskellStyleHeader(info_list, year)
+    let line_nb = line('$')
+    let current_cursor_pos = getpos('.')
+    normal! gg
+    let header = [
+                \"{-", "-- EPITECH PROJECT, " . a:year,
+                \"-- " . a:info_list[0],
+                \"-- File description:", "-- " . a:info_list[1],
+                \"-}", ""]
+    call append(line('.') - 1, header)
+    call setpos('.', s:ReturnNewlyPos(current_cursor_pos, 7))
+endfunction
+
 function! s:DumpTekHeader() 
     let reg_file_ext = '\v^(c|h)(pp)?$'
     let makefile = "Makefile"
@@ -75,6 +88,8 @@ function! s:DumpTekHeader()
         call s:CStyleHeader(s:GetHeaderInfo(file_name), file_extension, current_year)
     elseif file_name == makefile
         call s:MakeStyleHeader(s:GetHeaderInfo(file_name), current_year)
+    elseif file_name == 'hs'
+        call
     else
         echo "Can't apply header, the file type is not recognize!"
     endif
