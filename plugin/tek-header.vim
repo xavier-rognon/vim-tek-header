@@ -88,7 +88,7 @@ function! s:DumpTekHeader()
         call s:CStyleHeader(s:GetHeaderInfo(file_name), file_extension, current_year)
     elseif file_name == makefile
         call s:MakeStyleHeader(s:GetHeaderInfo(file_name), current_year)
-    elseif file_name == 'hs'
+    elseif file_extension == 'hs'
         call s:HaskellStyleHeader(s:GetHeaderInfo(file_name), current_year)
     else
         echo "Can't apply header, the file type is not recognize!"
