@@ -56,8 +56,8 @@ function s:CStyleHeader(info_list, file_name, file_ext, year)
         call append(line('.'), preprocessor_directives)
         if (a:file_ext ==# "hpp")
             let class = ["namespace " . a:info_list[2] . " {",
-                        \"\t" . a:file_name . " {"
-                        \"\tpublic:", "", "\tprivate," "", "\t};", "}"
+                        \"\t" . a:file_name . " {",
+                        \"\tpublic:", "", "\tprivate,", "", "\t};", "}"
             call append(line('.'), class)
         endif
         " TODO: add class construction function for hpp files
