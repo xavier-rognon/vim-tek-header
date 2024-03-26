@@ -53,13 +53,13 @@ function s:CStyleHeader(info_list, file_name, file_ext, year)
                     \"#ifndef " . cpp_header,
                     \"    #define " . cpp_header, "", "",
                     \"#endif /* " . cpp_header . " */" ]
-        call append(line('.'), preprocessor_directives)
         if (a:file_ext ==# "hpp")
             let class = [ "namespace " . a:info_list[2] . " {",
-                        \"\t" . a:file_name . " {",
+                        \"\tclass " . a:file_name . " {",
                         \"\tpublic:", "", "\tprivate,", "", "\t};", "}" ]
             call append(line('.'), class)
         endif
+        call append(line('.'), preprocessor_directives)
     endif
     
     call setpos('.', s:ReturnNewlyPos(current_cursor_pos, 7))
