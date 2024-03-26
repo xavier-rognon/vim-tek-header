@@ -5,7 +5,7 @@
 
 nnoremap <leader>h :call <SID>DumpTekHeader()<cr>
 
-function! s:GetHeaderInfo(file_name)
+function! s:GetHeaderInfo(file_name, file_extension)
     call inputsave()
     let project_name = input('Type Project Name => ')
     if empty(project_name)
@@ -19,15 +19,23 @@ function! s:GetHeaderInfo(file_name)
         let file_desc = a:file_name
     endif
 
+    let namespace = v:null
+    if (a:file_extension == "hpp")
+        let namespace = input('Type Namespace')
+        if empty(namespace
+            echo "NAMESPACE will not be generated"
+        endif
+    endif
+
     call inputrestore()
-    return [project_name, file_desc]
+    return [project_name, file_desc, namespace]
 endfunction
 
 function s:ReturnNewlyPos(list, num)
     return [a:list[0], a:list[1] + a:num, a:list[2], a:list[3]]
 endfunction
 
-function s:CStyleHeader(info_list, file_ext, year)
+function s:CStyleHeader(info_list, file_name, file_ext, year)
     let line_nb = line('$')
     let current_cursor_pos = getpos('.')
     normal! gg
@@ -39,13 +47,20 @@ function s:CStyleHeader(info_list, file_ext, year)
     call append(line('.') - 1, header)
 
     if (line_nb == 1 || line_nb == 0) && (a:file_ext ==# "h" || a:file_ext ==# "hpp")
-        let cpp_header = toupper(a:info_list[1]) . (a:file_ext ==# "h" ? "_H_" : "_HPP_")
-        let preprocessor_directives = [
+        " let cpp_header = toupper(a:info_list[1]) . (a:file_ext ==# "h" ? "_H_" : "_HPP_")
+        let preprocessor_directives = ["#pragma once", ""]
+                    " if you want to go back to the non pragma def guard
                     \"#ifndef " . cpp_header,
                     \"    #define " . cpp_header, "", "",
                     \"#endif /* " . cpp_header . " */" ]
         call append(line('.'), preprocessor_directives)
-        " TODO: add class construcion function for hpp files
+        if (a:file_ext ==# "hpp")
+            let class = ["namespace " . a:info_list[2] . " {",
+                        \"\t" . a:file_name . " {"
+                        \"\tpublic:", "", "\tprivate," "", "\t};", "}"
+            call append(line('.'), class)
+        endif
+        " TODO: add class construction function for hpp files
     endif
     
     call setpos('.', s:ReturnNewlyPos(current_cursor_pos, 7))
@@ -85,11 +100,11 @@ function! s:DumpTekHeader()
     let file_name = expand("%:t:r")
 
     if !empty(matchstr(file_extension, reg_file_ext))
-        call s:CStyleHeader(s:GetHeaderInfo(file_name), file_extension, current_year)
+        call s:CStyleHeader(s:GetHeaderInfo(file_name, file_extension), file_name, file_extension, current_year)
     elseif file_name == makefile
-        call s:MakeStyleHeader(s:GetHeaderInfo(file_name), current_year)
+        call s:MakeStyleHeader(s:GetHeaderInfo(file_name, file_extension), current_year)
     elseif file_extension == 'hs'
-        call s:HaskellStyleHeader(s:GetHeaderInfo(file_name), current_year)
+        call s:HaskellStyleHeader(s:GetHeaderInfo(file_name, file_extension), current_year)
     else
         echo "Can't apply header, the file type is not recognize!"
     endif
