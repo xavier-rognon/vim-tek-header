@@ -55,8 +55,8 @@ function s:CStyleHeader(info_list, file_name, file_ext, year)
                     \"#endif /* " . cpp_header . " */" ]
         if (a:file_ext ==# "hpp")
             let class = [ "namespace " . a:info_list[2] . " {",
-                        \"\tclass " . a:file_name . " {",
-                        \"\tpublic:", "", "\tprivate:", "", "\t};", "}" ]
+                        \"    class " . a:file_name . " {",
+                        \"    public:", "", "    private:", "", "    };", "}" ]
             call append(line('.'), class)
         endif
         call append(line('.'), preprocessor_directives)
