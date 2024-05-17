@@ -20,7 +20,7 @@ function! s:GetHeaderInfo(file_name, file_extension)
     endif
 
     let namespace = v:null
-    if (a:file_extension == "hpp")
+    if (a:file_extension == "hpp" || a:file_extension == "hh")
         let namespace = input('Type Namespace Name => ')
         if empty(namespace)
             echo "NAMESPACE will not be generated"
