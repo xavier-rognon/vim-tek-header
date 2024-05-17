@@ -53,7 +53,7 @@ function s:CStyleHeader(info_list, file_name, file_ext, year)
                     \"#ifndef " . cpp_header,
                     \"    #define " . cpp_header, "", "",
                     \"#endif /* " . cpp_header . " */" ]
-        if (a:file_ext ==# "hpp")
+        if (a:file_ext ==# "hpp" || a:file_ext ==# "hh")
             let class = [ "namespace " . a:info_list[2] . " {",
                         \"    class " . a:file_name . " {",
                         \"    public:", "", "    private:", "", "    };", "}" ]
