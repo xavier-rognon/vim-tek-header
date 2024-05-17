@@ -92,7 +92,7 @@ function s:HaskellStyleHeader(info_list, year)
 endfunction
 
 function! s:DumpTekHeader() 
-    let reg_file_ext = '\v^(c|h)(pp|h)?$'
+    let reg_file_ext = '\v^((c|h)(pp)|(hh))?$'
     let makefile = "Makefile"
     let current_year = strftime("%Y")
     let file_extension = expand("%:e")
