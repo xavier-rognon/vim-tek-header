@@ -46,7 +46,7 @@ function s:CStyleHeader(info_list, file_name, file_ext, year)
                 \"*/", ""]
     call append(line('.') - 1, header)
 
-    if (line_nb == 1 || line_nb == 0) && (a:file_ext ==# "h" || a:file_ext ==# "hpp")
+    if (line_nb == 1 || line_nb == 0) && (a:file_ext ==# "h" || a:file_ext ==# "hpp" || a:file_ext ==# "hh")
         " let cpp_header = toupper(a:info_list[1]) . (a:file_ext ==# "h" ? "_H_" : "_HPP_")
         let preprocessor_directives = ["#pragma once", ""]
                     " if you want to go back to the non pragma def guard
@@ -92,7 +92,7 @@ function s:HaskellStyleHeader(info_list, year)
 endfunction
 
 function! s:DumpTekHeader() 
-    let reg_file_ext = '\v^(c|h)(pp)?$'
+    let reg_file_ext = '\v^(c|h)(pp)(h)?$'
     let makefile = "Makefile"
     let current_year = strftime("%Y")
     let file_extension = expand("%:e")
