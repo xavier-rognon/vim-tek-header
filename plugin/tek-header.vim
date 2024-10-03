@@ -61,7 +61,6 @@ function s:CStyleHeader(info_list, file_name, file_ext, year)
         endif
         call append(line('.'), preprocessor_directives)
     endif
-    
     call setpos('.', s:ReturnNewlyPos(current_cursor_pos, 7))
 endfunction
 
@@ -92,13 +91,13 @@ function s:HaskellStyleHeader(info_list, year)
 endfunction
 
 function! s:DumpTekHeader() 
-    let reg_file_ext = '\v^((c|h)(pp)|(hh))?$'
+    let c_and_cpp_file_extension = '\v^(c|h|cpp|hpp|hh)?$'
     let makefile = "Makefile"
     let current_year = strftime("%Y")
     let file_extension = expand("%:e")
     let file_name = expand("%:t:r")
 
-    if !empty(matchstr(file_extension, reg_file_ext))
+    if !empty(matchstr(file_extension, c_and_cpp_file_extension))
         call s:CStyleHeader(s:GetHeaderInfo(file_name, file_extension), file_name, file_extension, current_year)
     elseif file_name == makefile
         call s:MakeStyleHeader(s:GetHeaderInfo(file_name, file_extension), current_year)
